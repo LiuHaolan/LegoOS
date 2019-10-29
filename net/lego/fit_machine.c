@@ -39,8 +39,9 @@ struct fit_machine_info *lego_cluster[CONFIG_FIT_NR_NODES];
  * raw numbers.
  */
 static const char *lego_cluster_hostnames[CONFIG_FIT_NR_NODES] = {
-	[0]	=	"wuklab00",
-	[1]	=	"wuklab01",
+	[0]	=	"wuklab09",
+	[1]	=	"wuklab10",
+//	[2]	=	"wuklab11",
 };
 
 static struct fit_machine_info WUKLAB_CLUSTER[] = {
@@ -49,11 +50,11 @@ static struct fit_machine_info WUKLAB_CLUSTER[] = {
 [2]	= {	.hostname =	"wuklab02",	.lid =	8,	},
 [3]	= {	.hostname =	"wuklab03",	.lid =	9,	},
 [4]	= {	.hostname =	"wuklab04",	.lid =	7,	},
-[5]	= {	.hostname =	"wuklab05",	.lid =	3,	},
+[5]	= {	.hostname =	"wuklab05",	.lid =	18,	},
 [6]	= {	.hostname =	"wuklab06",	.lid =	5,	},
 [7]	= {	.hostname =	"wuklab07",	.lid =	4,	},
 [8]	= {	.hostname =	"wuklab08",	.lid =	10,	},
-[9]	= {	.hostname =	"wuklab09",	.lid =	12,	},
+[9]	= {	.hostname =	"wuklab09",	.lid =	30,	},
 [10]	= {	.hostname =	"wuklab10",	.lid =	14,	},
 [11]	= {	.hostname =	"wuklab11",	.lid =	11,	},
 [12]	= {	.hostname =	"wuklab12",	.lid =	26,	},
