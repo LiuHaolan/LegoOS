@@ -281,7 +281,7 @@ They are described by these two configurations:
 
 For one run, all LegoOS instance must have the same `CONFIG_FIT_NR_NODES`. And each LegoOS instance must have its unique `CONFIG_FIT_LOCAL_ID`. The detailed configuration will be described at `1P-1M` and `1P-1M-1S` sections.
 
-After setting up above configurations, you also need to manually change the `lego_cluster_hostnames` array at `net/fit/fit_machine.c`. The array specifies the machines used in one run, and the array must be built based the ID sequence.
+After setting up above configurations, you also need to manually change the `lego_cluster_hostnames` array at `net/lego/fit_machine.c`. The array specifies the machines used in one run, and the array must be built based the ID sequence.
 
 ###  4.4. <a name='ConfigureOutput'></a>Configure Output
 
@@ -430,7 +430,7 @@ We provid two `.config` and `fit_config.h ` samples for the `1P-1M-1S` setting. 
     - `cp Documentation/configs/1P-1M-1S-Memory .config`
     - `make`
 - Storage
-    - `cp Documentation/configs-1P-1M-1S-fit_config.h linux-modules/fit/fit_config.h`
+    - `cp Documentation/configs/1P-1M-1S-fit_config.h linux-modules/fit/fit_config.h`
     - `cd linux-modules`
     - `make`
 
