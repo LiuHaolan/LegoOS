@@ -118,6 +118,12 @@ static inline int pcache_stat(struct pcache_stat *buf)
 	return ret;
 }
 
+static inline int mq_send(void)
+{
+	return syscall(__NR_mq_send);
+	
+}
+
 static inline unsigned short from32to16(unsigned a) 
 {
 	unsigned short b = a >> 16; 

@@ -48,6 +48,12 @@ SYSCALL_DEFINE0(getpid)
 	return current->group_leader->pid;
 }
 
+// IPC
+SYSCALL_DEFINE0(mq_send)
+{
+	return 0;
+}
+
 /* Thread ID - the internal kernel "pid" */
 SYSCALL_DEFINE0(gettid)
 {

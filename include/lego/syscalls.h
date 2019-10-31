@@ -245,4 +245,8 @@ asmlinkage long sys_epoll_wait(int epfd, struct epoll_event __user *events,
 				int maxevents, int timeout);
 asmlinkage long sys_poll(struct pollfd __user *ufds, unsigned int nfds,
 			long timeout_msecs);
+
+// ipc
+asmlinkage long sys_mq_send(void);
+
 #endif /* _LEGO_SYSCALLS_H_ */
