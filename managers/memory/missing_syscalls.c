@@ -21,6 +21,12 @@
 #include <lego/waitpid.h>
 #include <processor/pcache.h>
 
+//t2
+SYSCALL_DEFINE1(mq_open,char*,name)
+{
+	BUG();
+}
+
 SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
 {
 	BUG();
