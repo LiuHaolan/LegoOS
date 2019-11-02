@@ -124,6 +124,12 @@ static inline int mq_send(void)
 	
 }
 
+//t2
+static inline int mq_open(char* name)
+{
+	return syscall(__NR_mq_open,name);
+}
+
 static inline unsigned short from32to16(unsigned a) 
 {
 	unsigned short b = a >> 16; 
