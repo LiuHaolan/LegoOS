@@ -172,6 +172,12 @@ void __init processor_manager_early_init(void)
 	pcache_early_init();
 }
 
+//t2
+SYSCALL_DEFINE1(mq_open, char* , name)
+{
+	return 0;
+}
+
 #ifndef CONFIG_CHECKPOINT
 SYSCALL_DEFINE1(checkpoint_process, pid_t, pid)
 {

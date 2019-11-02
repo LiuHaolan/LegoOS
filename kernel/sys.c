@@ -49,6 +49,9 @@ SYSCALL_DEFINE0(getpid)
 }
 
 // IPC
+//
+//t2
+//#include <lego/fit_ibapi.h>
 SYSCALL_DEFINE0(mq_send)
 {
 	return 0;
