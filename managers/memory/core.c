@@ -199,6 +199,10 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 	case P2M_DROP_CACHE:
 		handle_p2m_drop_page_cache(hdr, buffer);
 		break;
+	
+	// t2
+	case P2_MQOPEN:
+		printk("mq open received");
 
 #ifdef CONFIG_MEM_PAGE_CACHE
 	case P2M_LSEEK:
