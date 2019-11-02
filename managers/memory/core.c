@@ -201,8 +201,9 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		break;
 	
 	// t2
-	case P2_MQOPEN:
+	case P2M_MQSEND:
 		printk("mq open received");
+		break;
 
 #ifdef CONFIG_MEM_PAGE_CACHE
 	case P2M_LSEEK:
