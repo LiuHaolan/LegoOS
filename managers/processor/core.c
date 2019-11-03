@@ -26,6 +26,10 @@
 
 #include "processor.h"
 
+//t2
+#include <lego/fit_ibapi.h>
+
+
 #define MAX_INIT_ARGS	CONFIG_INIT_ENV_ARG_LIMIT
 #define MAX_INIT_ENVS	CONFIG_INIT_ENV_ARG_LIMIT
 
@@ -175,7 +179,31 @@ void __init processor_manager_early_init(void)
 //t2
 SYSCALL_DEFINE1(mq_open, char* , name)
 {
-	return 0;
+	ssize_t retval, retlen;
+	u32 len_msg;
+	void *msg;
+	struct common_header* hdr;
+	len_msg = sizeof(*hdr);
+	msg = kmalloc(len_msg, GFP_KERNEL);
+	if(!msg)
+		return -ENOMEM;
+	
+	hdr = (struct common_header *)msg;
+	hdr->opcode = P2M_MQOPEN;
+	hdr->src_nid = LEGO_LOCAL_NID;
+	
+	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg,
+			     &retval, sizeof(retval), false);	
+	
+	// check return value
+	if(retlen == -ETIMEDOUT){
+		return -1;
+	}		
+
+	// free allocated memory
+	kfree(msg);
+
+	return retlen;
 }
 
 #ifndef CONFIG_CHECKPOINT
