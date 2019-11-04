@@ -179,7 +179,7 @@ void __init processor_manager_early_init(void)
 //t2
 SYSCALL_DEFINE1(mq_open, char* , name)
 {
-	ssize_t retval, retlen;
+	ssize_t retlen;
 	u32 len_msg;
 	void *msg;
 	struct common_header* hdr;
@@ -192,13 +192,12 @@ SYSCALL_DEFINE1(mq_open, char* , name)
 	hdr->opcode = P2M_MQOPEN;
 	hdr->src_nid = LEGO_LOCAL_NID;
 	
-	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg,
-			     &retval, sizeof(retval), false);	
+	retlen = ibapi_send(current_pgcache_home_node(), msg, len_msg);	
 	
 	// check return value
-	if(retlen == -ETIMEDOUT){
-		return -1;
-	}		
+//	if(retlen == -ETIMEDOUT){
+//		return -1;
+//	}		
 
 	// free allocated memory
 	kfree(msg);
