@@ -171,6 +171,18 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		__SetThpoolBufferNoreply(buffer);
 		handle_p2m_test_noreply(msg, buffer);
 		break;
+	// t2
+	case P2M_MQOPEN:
+		__SetThpoolBufferNoreply(buffer);		
+		buffer->tx_size=1;
+		printk("mq open received");
+		break;
+
+/*	case P2M_MQSEND:
+		printk("mq send received");
+		break;
+*/
+
 
 /* PCACHE */
 	case P2M_PCACHE_MISS:
@@ -184,7 +196,6 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 	case P2M_PCACHE_ZEROFILL:
 		handle_p2m_zerofill(msg, buffer);
 		break;
-
 /* SYSCALL */
 	case P2M_READ:
 		inc_mm_stat(HANDLE_READ);
@@ -200,14 +211,6 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		handle_p2m_drop_page_cache(hdr, buffer);
 		break;
 	
-	// t2
-	case P2M_MQOPEN:
-		printk("mq open received");
-		break;
-
-	case P2M_MQSEND:
-		printk("mq send received");
-		break;
 
 #ifdef CONFIG_MEM_PAGE_CACHE
 	case P2M_LSEEK:
