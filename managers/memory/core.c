@@ -44,6 +44,19 @@ void handle_bad_request(struct common_header *hdr, u64 desc)
 	ibapi_reply_message(&retbuf, 4, desc);
 }
 
+void handle_mq_open_request(struct thpool_buffer *tb){
+	ssize_t* retval;
+	retval = thpool_buffer_tx(tb);
+	tb_set_tx_size(tb, sizeof(*retval));
+
+	// creating mq here
+	
+
+	// return 0 means success!
+	*retval = 0;
+	
+}
+
 struct thpool_worker thpool_worker_map[NR_THPOOL_WORKERS];
 static int TW_HEAD __cacheline_aligned;
 static DEFINE_COMPLETION(thpool_init_completion);
@@ -173,8 +186,9 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		break;
 	// t2
 	case P2M_MQOPEN:
-		__SetThpoolBufferNoreply(buffer);		
-		buffer->tx_size=1;
+	//	__SetThpoolBufferNoreply(buffer);		
+	//	buffer->tx_size=1;
+		handle_mq_open_request(buffer);
 		printk("mq open received");
 		break;
 
