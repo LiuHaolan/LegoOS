@@ -44,13 +44,13 @@ void handle_bad_request(struct common_header *hdr, u64 desc)
 	ibapi_reply_message(&retbuf, 4, desc);
 }
 
-void handle_mq_open_request(struct thpool_buffer *tb, int msg_size){
+void handle_mq_open_request(struct thpool_buffer *tb){
 	ssize_t* retval;
 	retval = thpool_buffer_tx(tb);
 	tb_set_tx_size(tb, sizeof(*retval));
 
 	// creating mq here
-	mem_create_mq(tb, msg_size);	
+	
 
 	// return 0 means success!
 	*retval = 0;
