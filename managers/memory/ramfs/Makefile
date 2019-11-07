@@ -1,6 +1,6 @@
 obj-y := piggy.o
 obj-y += core.o
-
+obj-y += haolanpiggy.o
 #
 # Add dependency, so it can compile if .config changes
 #

@@ -16,14 +16,15 @@
 #include <memory/vm.h>
 #include <memory/file_ops.h>
 
-extern char __ramfs_start[], __ramfs_end[];
+extern char __ramfs_start[],  __ramfs_end[];
+extern char __ramfs_start2[], __ramfs_end2[];
 
 static ssize_t ramfs_read(struct lego_task_struct *tsk, struct lego_file *file,
 			  char *buf, size_t count, loff_t *pos)
 {
 	char *start;
 
-	start = __ramfs_start + *pos;
+	start = __ramfs_start2 + *pos;
 	memcpy(buf, start, count);
 	*pos += count;
 
