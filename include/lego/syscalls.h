@@ -248,6 +248,6 @@ asmlinkage long sys_poll(struct pollfd __user *ufds, unsigned int nfds,
 
 // ipc
 asmlinkage long sys_mq_send(void);
-asmlinkage long sys_mq_open(char* name);
+asmlinkage long sys_mq_open(char* mq_name, int msg_size);
 
 #endif /* _LEGO_SYSCALLS_H_ */

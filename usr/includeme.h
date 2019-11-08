@@ -125,9 +125,9 @@ static inline int mq_send(void)
 }
 
 //t2
-static inline int mq_open(char* name)
+static inline int mq_open(char* name, int msg_size)
 {
-	return syscall(__NR_mq_open,name);
+	return syscall(__NR_mq_open,name, msg_size);
 }
 
 static inline unsigned short from32to16(unsigned a) 

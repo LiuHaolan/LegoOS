@@ -22,7 +22,7 @@
 #include <processor/pcache.h>
 
 //t2
-SYSCALL_DEFINE1(mq_open,char*,name)
+SYSCALL_DEFINE2(mq_open, char*, name, int, msg_size)
 {
 	BUG();
 }

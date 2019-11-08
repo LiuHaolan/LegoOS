@@ -177,13 +177,14 @@ void __init processor_manager_early_init(void)
 }
 
 //t2
-SYSCALL_DEFINE1(mq_open, char* , name)
+SYSCALL_DEFINE2(mq_open, char* , name, int, msg_size)
 {
 	ssize_t retval, retlen;
 	u32 len_msg;
 	void *msg;
 	struct common_header* hdr;
-	len_msg = sizeof(*hdr);
+	struct p2m_mqopen_payload* payload;
+	len_msg = sizeof(*hdr)+sizeof(*payload);
 	msg = kmalloc(len_msg, GFP_KERNEL);
 	if(!msg)
 		return -ENOMEM;
@@ -191,7 +192,12 @@ SYSCALL_DEFINE1(mq_open, char* , name)
 	hdr = (struct common_header *)msg;
 	hdr->opcode = P2M_MQOPEN;
 	hdr->src_nid = LEGO_LOCAL_NID;
-	
+	payload=to_payload(msg);
+	// copy string
+//	payload->mq_name,nam;
+//haolanTODO
+	payload->msg_size=msg_size;	
+
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
 	// check return value

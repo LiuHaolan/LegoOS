@@ -107,6 +107,7 @@ struct p2m_read_write_payload {
 	ssize_t	len;
 	loff_t	offset;
 };
+
 void handle_p2m_read(struct p2m_read_write_payload *payload,
 		     struct common_header *hdr, struct thpool_buffer *tb);
 void handle_p2m_write(struct p2m_read_write_payload *payload,
@@ -194,6 +195,16 @@ struct m2p_execve_struct {
 void handle_p2m_execve(struct p2m_execve_struct *payload,
 		       struct common_header *hdr, struct thpool_buffer *tb);
 
+/*
+ * P2M_MQOPEN
+ */
+struct p2m_mqopen_payload{
+	int msg_size;
+	char* mq_name[MAX_FILENAME_LENGTH];
+};
+
+void handle_mq_open_request(struct p2m_mqopen_payload* payload, 
+	struct thpool_buffer*tb);
 /*
  * P2M_MMAP
  */

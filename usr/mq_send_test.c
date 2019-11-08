@@ -23,7 +23,7 @@ static void lego_uname(void)
 
 int main(void)
 {
-	printf("mq_open: %d\n", mq_open("gan"));
+	printf("mq_open: %d\n", mq_open("gan", 6));
 //	lego_time();
 
 //	lego_uname();
