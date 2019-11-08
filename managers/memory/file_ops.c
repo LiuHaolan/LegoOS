@@ -47,9 +47,13 @@ struct lego_file *file_open(struct lego_task_struct *tsk, const char *filename)
 
 	atomic_set(&file->f_count, 1);
 	strncpy(file->filename, filename, MAX_FILENAME_LEN);
-
+	
+	printk("node num: %d\n",tsk->node);
 #ifdef CONFIG_USE_RAMFS
-	file->f_op = &ramfs_file_ops;
+	if(tsk->node==0)
+		file->f_op = &ramfs_file_ops;
+	else
+		file->f_op = &ramfs_file_ops2;
 #else
 	file->f_op = &storage_file_ops;
 #endif

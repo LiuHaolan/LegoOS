@@ -16,28 +16,28 @@
 #include <memory/vm.h>
 #include <memory/file_ops.h>
 
-extern char __ramfs_start[],  __ramfs_end[];
-//extern char __ramfs_start2[], __ramfs_end2[];
+//extern char __ramfs_start[],  __ramfs_end[];
+extern char __ramfs_start2[], __ramfs_end2[];
 
-static ssize_t ramfs_read(struct lego_task_struct *tsk, struct lego_file *file,
+static ssize_t ramfs_read2(struct lego_task_struct *tsk, struct lego_file *file,
 			  char *buf, size_t count, loff_t *pos)
 {
 	char *start;
 
-	start = __ramfs_start + *pos;
+	start = __ramfs_start2 + *pos;
 	memcpy(buf, start, count);
 	*pos += count;
 
 	return count;
 }
 
-static ssize_t ramfs_write(struct lego_task_struct *tsk, struct lego_file *file,
+static ssize_t ramfs_write2(struct lego_task_struct *tsk, struct lego_file *file,
 			   const char *buf, size_t count, loff_t *pos)
 {
 	return -EINVAL;
 }
 
-static int ramfs_vma_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
+static int ramfs_vma_fault2(struct vm_area_struct *vma, struct vm_fault *vmf)
 {
 	struct lego_task_struct *tsk;
 	struct lego_file *file;
@@ -54,26 +54,26 @@ static int ramfs_vma_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
 	count = PAGE_SIZE;
 	pos = vmf->pgoff << PAGE_SHIFT;
 
-	ramfs_read(tsk, file, (char *)page, count, &pos);
+	ramfs_read2(tsk, file, (char *)page, count, &pos);
 
 	vmf->page = page;
 
 	return 0;
 }
 
-static struct vm_operations_struct ramfs_vma_ops = {
-	.fault	= ramfs_vma_fault,
+static struct vm_operations_struct ramfs_vma_ops2 = {
+	.fault	= ramfs_vma_fault2,
 };
 
-static int ramfs_mmap(struct lego_task_struct *tsk, struct lego_file *file,
+static int ramfs_mmap2(struct lego_task_struct *tsk, struct lego_file *file,
 		      struct vm_area_struct *vma)
 {
-	vma->vm_ops = &ramfs_vma_ops;
+	vma->vm_ops = &ramfs_vma_ops2;
 	return 0;
 }
 
-struct lego_file_operations ramfs_file_ops = {
-	.read	= ramfs_read,
-	.write	= ramfs_write,
-	.mmap	= ramfs_mmap,
+struct lego_file_operations ramfs_file_ops2 = {
+	.read	= ramfs_read2,
+	.write	= ramfs_write2,
+	.mmap	= ramfs_mmap2,
 };

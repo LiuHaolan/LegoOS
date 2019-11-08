@@ -209,6 +209,12 @@ SECTIONS {
 		*(.ramfs)
 		__ramfs_end = .;
 	}
+	. = ALIGN(PAGE_SIZE);
+	.ramfshaolan : AT(ADDR(.ramfshaolan) - LOAD_OFFSET) {
+		__ramfs_start2 = .;
+		*(.ramfshaolan)
+		__ramfs_end2 = .;
+	}
 #endif
 
 	__einit = .;
