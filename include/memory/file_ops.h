@@ -14,6 +14,7 @@
 #include <memory/file_types.h>
 
 extern struct lego_file_operations ramfs_file_ops;
+extern struct lego_file_operations ramfs_file_ops2;
 extern struct lego_file_operations storage_file_ops;
 
 /* Storage APIs */
