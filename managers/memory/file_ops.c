@@ -37,6 +37,7 @@ ssize_t file_write(struct lego_task_struct *tsk, struct lego_file *file,
 /*
  * Open a file, allocate and initialized the lego_file data structure
  */
+
 struct lego_file *file_open(struct lego_task_struct *tsk, const char *filename)
 {
 	struct lego_file *file;
@@ -49,8 +50,9 @@ struct lego_file *file_open(struct lego_task_struct *tsk, const char *filename)
 	strncpy(file->filename, filename, MAX_FILENAME_LEN);
 	
 	printk("node num: %d\n",tsk->node);
+	unsigned int node0 = 0;
 #ifdef CONFIG_USE_RAMFS
-	if(tsk->node==0)
+	if(tsk->node==node0)
 		file->f_op = &ramfs_file_ops;
 	else
 		file->f_op = &ramfs_file_ops2;
