@@ -200,7 +200,7 @@ void handle_p2m_execve(struct p2m_execve_struct *payload,
  */
 struct p2m_mqopen_payload{
 	int msg_size;
-	char* mq_name[MAX_FILENAME_LENGTH];
+	char mq_name[MAX_FILENAME_LENGTH];
 };
 
 void handle_mq_open_request(struct p2m_mqopen_payload* payload, 
