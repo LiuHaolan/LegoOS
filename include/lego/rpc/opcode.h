@@ -36,9 +36,9 @@
 
 // add our own opcode
 #define P2M_MQOPEN		((__u32)__NR_mq_open)		
-//#define P2M_MQCLOSE		
+#define P2M_MQCLOSE		((__u32)__NR_mq_close)		
 #define P2M_MQSEND		((__u32)__NR_mq_send)
-//#define P2M_MQRECEIVE
+#define P2M_MQRECEIVE		((__u32)__NR_mq_receive)
 
 #define P2M_READ		((__u32)__NR_read)
 #define P2M_WRITE		((__u32)__NR_write)
@@ -93,6 +93,7 @@
 #define M2MM_STATUS_REPORT		(MONITOR_BASE + 4)
 #define P2PM_REQUEST_VNODE		(MONITOR_BASE + 5)
 #define PM2P_BROADCAST_VNODE		(MONITOR_BASE + 6)
+#define P2MM_SHAREMQNAME		(MONITOR_BASE + 7)
 
 /* Memory to Storage */
 #define M2S_READ		P2M_READ		/* Reuse the same nr */

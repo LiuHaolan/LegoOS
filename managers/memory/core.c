@@ -32,7 +32,7 @@
 #include <memory/pgcache.h>
 
 #include <monitor/gmm_handler.h>
-
+#include <monitor/common.h>
 void handle_bad_request(struct common_header *hdr, u64 desc)
 {
 	u32 retbuf;
@@ -57,6 +57,9 @@ void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	printk(kname);
 	printk("\nmessage queue size: %d\n", ksize);
 
+#ifdef CONFIG_GMM 
+	ssize_t result = read_mq_nid_from_gmm(kname);
+#endif
 	// return 0 means success!
 	*retval = 0;
 	

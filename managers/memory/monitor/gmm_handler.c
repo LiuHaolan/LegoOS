@@ -21,6 +21,31 @@
 
 unsigned long sysctl_m2mm_status_report_interval_ms = 500;
 
+//t4
+#define MQ_NODE 2
+int read_mq_nid_from_gmm(char* mq_name){
+        ssize_t retval, retlen;
+        u32 len_msg;
+        void *msg;
+        struct common_header* hdr;
+
+        len_msg = sizeof(*hdr);
+        msg = kmalloc(len_msg, GFP_KERNEL);
+        if(!msg)
+                return -ENOMEM;
+
+        hdr = (struct common_header *)msg;
+        hdr->opcode = P2MM_SHAREMQNAME;
+        hdr->src_nid = LEGO_LOCAL_NID;
+
+        retlen = ibapi_send_reply_imm(MQ_NODE, msg, len_msg, &retval, sizeof(retval),false);
+
+
+        // free allocated memory
+        kfree(msg);
+        return retval;
+}
+
 static int m2mm_status_report(void *_unused)
 {
 	struct m2mm_status_report r;

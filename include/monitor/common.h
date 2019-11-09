@@ -100,4 +100,7 @@ struct pm2p_broadcast_vnode_struct {
 	int ip;
 };
 
+//t4
+int read_mq_nid_from_gmm(char* mq_name);
+
 #endif /* _LEGO_MONITOR_COMMON_H */
