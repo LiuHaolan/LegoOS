@@ -36,9 +36,9 @@
 
 // add our own opcode
 #define P2M_MQOPEN		((__u32)__NR_mq_open)		
-//#define P2M_MQCLOSE		
+#define P2M_MQCLOSE		((__u32)__NR_mq_close)		
 #define P2M_MQSEND		((__u32)__NR_mq_send)
-//#define P2M_MQRECEIVE
+#define P2M_MQRECEIVE		((__u32)__NR_mq_receive)
 
 #define P2M_READ		((__u32)__NR_read)
 #define P2M_WRITE		((__u32)__NR_write)
