@@ -52,10 +52,11 @@ SYSCALL_DEFINE0(getpid)
 //
 //t2
 //#include <lego/fit_ibapi.h>
-SYSCALL_DEFINE0(mq_send)
-{
-	return 0;
-}
+//SYSCALL_DEFINE0(mq_send)
+//{
+//	return 0;
+//}
+// haolan moves it to manager/processor/core.c
 
 /* Thread ID - the internal kernel "pid" */
 SYSCALL_DEFINE0(gettid)
