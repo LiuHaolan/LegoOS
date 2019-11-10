@@ -74,7 +74,10 @@ static int req_dispatcher(void)
 	case P2GSM_COMMON:
 		handle_p2sm_alloc_nodes((int *)rcvbuf, desc);
 		break;
-
+	case P2MM_SHAREMQNAME:
+		handle_m2mm_mq_request(payload, desc);
+		printk("mq name received!\n");
+		break;
 	default:
 		handle_bad_request(hdr, desc);
 	}
