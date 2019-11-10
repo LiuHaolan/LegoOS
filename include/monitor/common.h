@@ -103,4 +103,9 @@ struct pm2p_broadcast_vnode_struct {
 //t4
 int read_mq_nid_from_gmm(char* mq_name);
 
+struct m2mm_mqname_report{
+	char* name[MAX_FILENAME_LENGTH];
+};
+
+
 #endif /* _LEGO_MONITOR_COMMON_H */

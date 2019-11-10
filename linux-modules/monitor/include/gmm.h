@@ -22,5 +22,5 @@ struct mnode_struct {
 int choose_node(void);
 int handle_m2mm_consult(struct consult_info *, u64, struct common_header *);
 void handle_m2mm_status_report(struct m2mm_status_report *payload, u64 desc);
-
+void handle_m2mm_mq_request(struct m2mm_mqname_report *payload, u64 desc);
 #endif /* _LEGO_GMM_H */
