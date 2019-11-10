@@ -40,6 +40,7 @@ void handle_m2mm_mq_request(struct m2mm_mqname_report *payload, u64 desc)
 	ibapi_reply_message(reply, sizeof(*reply), desc);
 	
 }
+EXPORT_SYMBOL(handle_m2mm_mq_request);
 
 int handle_m2mm_consult(struct consult_info *payload, u64 desc, struct common_header *hdr)
 {
