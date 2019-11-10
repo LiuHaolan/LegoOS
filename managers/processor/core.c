@@ -209,13 +209,16 @@ SYSCALL_DEFINE2(mq_open, char* , name, int, msg_size)
 	hdr->opcode = P2M_MQOPEN;
 	hdr->src_nid = LEGO_LOCAL_NID;
 	payload=to_payload(msg);
+
+	printk("send number: %d\n",msg_size);
+
 	// copy string
 //	payload->mq_name,nam;
 //haolanTODO
 	// we need to use copy_user_to_kernel
 	//strcpy(payload->mq_name, name);
 	copy_from_user(payload->mq_name, name, strlen(name));
-	copy_from_user(payload->msg_size, msg_size, sizeof(int));
+	copy_from_user(&(payload->msg_size), &msg_size, sizeof(int));
 //	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
