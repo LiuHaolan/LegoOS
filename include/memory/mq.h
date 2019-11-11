@@ -40,4 +40,10 @@ static inline void listdata_del(struct list_data *node){
 	kfree(node->data);
 }
 
+unsigned long mq_create(char* mq_name, int msg_size, struct mq_header *mq);
+struct mq_header* mc_mq_open(char* mq_name);
+unsigned long mc_mq_send(char* name, char* msg_data, unsigned long msg_size);
+unsigned long mc_mq_recv(char* name, char* buffer, unsigned long msg_size);
+int msg_del(struct mq_header *mq, struct list_data *node);
+unsigned long mc_mq_close(char* name);
 #endif

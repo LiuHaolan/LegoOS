@@ -1,13 +1,16 @@
 #include <lego/list.h>
 #include <memory/mq.h>
 
-int init_mqs(int mq_num){
+unsigned long init_mqs(int mq_num){
 	addr_map = kmalloc(mq_num * sizeof(struct addrmap), GFP_KERNEL);
+	if(addr_map == NULL)
+		return -1;
 	current_mq = 0;
 	mq_size = mq_num;
+	return 0;
 }
 
-int mq_create(char* mq_name, int msg_size, struct mq_header *mq){
+unsigned long mq_create(char* mq_name, int msg_size, struct mq_header *mq){
 	mq->mq_name = mq_name;
 	mq->msg_size = msg_size;
 	mq->msg_list->prev = NULL;
@@ -28,7 +31,7 @@ int mq_create(char* mq_name, int msg_size, struct mq_header *mq){
 	return 0;
 }
 
-struct mq_header* mq_open(char* mq_name){
+struct mq_header* mc_mq_open(char* mq_name){
 	for(int i=0; i<mq_size; i++){
 		if(strcmp(mq_name, addr_map[i].mq_name)==0)
 			return (struct mq_header*)(addr_map[i].mq_addr);
@@ -37,7 +40,9 @@ struct mq_header* mq_open(char* mq_name){
 }
 
 //TODO: add concurrency control
-int mq_send(struct mq_header *mq, void* msg_data, int msg_size){
+unsigned long mc_mq_send(char* name, char* msg_data, unsigned long msg_size){
+	struct mq_header *mq = mc_mq_open(name);
+
 	mutex_lock(&(mq->mutex));
 	memcpy(mq->current_msg->data, msg_data, msg_size);
 
@@ -54,7 +59,9 @@ int mq_send(struct mq_header *mq, void* msg_data, int msg_size){
 }
 
 //TODO: add concurrency control
-int mq_recv(struct mq_header *mq, void* buffer, int msg_size){
+unsigned long mc_mq_recv(char* name, char* buffer, unsigned long msg_size){
+	struct mq_header *mq = mc_mq_open(name);
+
 	mutex_lock(&(mq->mutex));
 	if(mq->current_msg->prev!=NULL)
 		memcpy(buffer, mq->current_msg->prev->data, msg_size);
@@ -68,11 +75,26 @@ int mq_recv(struct mq_header *mq, void* buffer, int msg_size){
 	mutex_unlock(&(mq->mutex));
 }
 
-int mq_del(struct mq_header *mq, struct list_data *node){
+int msg_del(struct mq_header *mq, struct list_data *node){
 	
 	if(mq->current_msg == node){
 		//converting the ptr of list_head to list_data
 		mq->current_msg = (struct list_data *)(node->list->prev);
 	}
 	listdata_del(node);
+}
+
+unsigned long mc_mq_close(char* name){
+	struct mq_header *mq = mc_mq_open(name);
+	if(mq == NULL)
+		return -1;
+
+	kfree(mq_name);
+	mutex_destroy(&(mq->mutex));
+
+	struct list_data *node = current_msg;
+	while(node->next!=NULL){
+		kfree(node->data);
+		node = node->next;
+	}
 }	
