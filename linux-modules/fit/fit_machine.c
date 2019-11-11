@@ -34,11 +34,11 @@
  * lead to an early panic.
  */
 static const char *lego_cluster_hostnames[CONFIG_FIT_NR_NODES] = {
-	[0]	=	"wuklab14",
-	[1]	=	"wuklab09",
-	[2]	=	"wuklab12",
-	[3]	=	"wuklab13",
-	[4]	=	"wuklab15",
+	[0]	=	"wuklab09",
+	[1]	=	"wuklab08",
+	[2]	=	"wuklab11",
+//	[3]	=	"wuklab13",
+//	[4]	=	"wuklab15",
 };
 
 /* Built based on node id */
@@ -59,7 +59,7 @@ static struct fit_machine_info WUKLAB_CLUSTER[] = {
 [11]	= {	.hostname =	"wuklab11",	.lid =	11,	},
 [12]	= {	.hostname =	"wuklab12",	.lid =	26,	},
 [13]	= {	.hostname =	"wuklab13",	.lid =	15,	},
-[14]	= {	.hostname =	"wuklab14",	.lid =	16,	},
+[14]	= {	.hostname =	"wuklab14",	.lid =	29,	},
 [15]	= {	.hostname =	"wuklab15",	.lid =	17,	},
 [16]	= {	.hostname =	"wuklab16",	.lid =	20,	},
 [17]	= {	.hostname =	"wuklab17",	.lid =	21,	},

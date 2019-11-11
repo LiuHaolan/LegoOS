@@ -32,6 +32,16 @@ static struct mnode_struct *get_mnode(unsigned int nid)
 	return target;
 }
 
+
+void handle_m2mm_mq_request(struct m2mm_mqname_report *payload, u64 desc)
+{
+	// memory node
+	unsigned int* reply=kmalloc(sizeof(int),GFP_KERNEL);
+	ibapi_reply_message(reply, sizeof(*reply), desc);
+	
+}
+EXPORT_SYMBOL(handle_m2mm_mq_request);
+
 int handle_m2mm_consult(struct consult_info *payload, u64 desc, struct common_header *hdr)
 {
 	unsigned int src_nid = hdr->src_nid;

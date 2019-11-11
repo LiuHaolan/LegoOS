@@ -176,13 +176,13 @@ void __init processor_manager_early_init(void)
 	pcache_early_init();
 }
 
-SYSCALL_DEFINE3(mq_send, char*, name, int, msg_size, const char*, msg)
+SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
 {
 	//BUG();
 	return 1;
 }
 
-SYSCALL_DEFINE3(mq_receive, char*, name, int, msg_size, char*, msg)
+SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg)
 {
 	//BUG();
 	return 2;
@@ -193,7 +193,7 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 	return 3;
 }
 //t2
-SYSCALL_DEFINE2(mq_open, char* , name, int, msg_size)
+SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
 {
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -209,11 +209,14 @@ SYSCALL_DEFINE2(mq_open, char* , name, int, msg_size)
 	hdr->opcode = P2M_MQOPEN;
 	hdr->src_nid = LEGO_LOCAL_NID;
 	payload=to_payload(msg);
+
+	printk("send number: %d\n",msg_size);
+
 	// copy string
-//	payload->mq_name,nam;
-//haolanTODO
-	strcpy(payload->mq_name, name);
-	payload->msg_size=msg_size;	
+	// we need to use copy_user_to_kernel
+	//strcpy(payload->mq_name, name);
+	copy_from_user(payload->mq_name, name, strlen(name));
+	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
