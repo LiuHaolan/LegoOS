@@ -57,9 +57,32 @@ void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	printk(kname);
 	printk("\nmessage queue size: %d\n", ksize);
 
+	// open real mq here
+	ksize = 10;
+	mq_open(kname, ksize);
+
 #ifdef CONFIG_GMM 
 	ssize_t result = read_mq_nid_from_gmm(kname);
 #endif
+	// return 0 means success!
+	*retval = 0;
+	
+}
+
+void handle_mq_send_request(struct p2m_mqsend_payload* payload,
+	struct thpool_buffer *tb)
+{
+	ssize_t* retval;
+	retval = thpool_buffer_tx(tb);
+	tb_set_tx_size(tb, sizeof(*retval));
+
+	// creating mq here
+	char* kname = payload->mq_name;
+	int ksize = payload->msg_size;
+	printk(kname);
+	printk("\nmessage queue size: %d\n", ksize);
+
+
 	// return 0 means success!
 	*retval = 0;
 	
