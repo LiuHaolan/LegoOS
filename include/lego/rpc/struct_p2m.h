@@ -227,7 +227,7 @@ struct p2m_mqsend_payload{
 	char mq_name[MAX_FILENAME_LENGTH];
 };
 
-void handle_mq_send_request(struct p2m_mqopen_payload* payload, 
+void handle_mq_send_request(struct p2m_mqsend_payload* payload, 
 	struct thpool_buffer*tb);
 
 

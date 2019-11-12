@@ -44,6 +44,20 @@ void handle_bad_request(struct common_header *hdr, u64 desc)
 	ibapi_reply_message(&retbuf, 4, desc);
 }
 
+#include <memory/msg_q.h>
+void mq_test(void){
+	append("NVSL", 4, &yi_list);
+	append("STABLE", 6, &yi_list);
+	append("WUKLAB", 6, &yi_list);
+	char* msg = kmalloc(sizeof(char)*(MAX_FILENAME_LENGTH+1), GFP_KERNEL);	
+	int size;	
+	pop(msg,&size, &yi_list);
+	printk("%s: %d\n", msg, size);
+	kfree(msg);
+
+	print(&yi_list);
+}
+
 void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	struct thpool_buffer *tb)
 {
@@ -59,8 +73,10 @@ void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 
 	// open real mq here
 	ksize = 10;
-	mq_open(kname, ksize);
+//	mq_open(kname, ksize);
 
+	// test
+	mq_test();
 #ifdef CONFIG_GMM 
 	ssize_t result = read_mq_nid_from_gmm(kname);
 #endif
