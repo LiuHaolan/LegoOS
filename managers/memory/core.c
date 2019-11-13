@@ -58,6 +58,28 @@ void mq_test(void){
 	print(&yi_list);
 }
 
+void handle_mq_recv_request(struct p2m_mqopen_payload* payload,
+	struct thpool_buffer *tb)
+{
+	ssize_t* retval;
+	retval = thpool_buffer_tx(tb);
+
+	tb_set_tx_size(tb, sizeof(*retval));
+
+}
+
+void handle_mq_close_request(struct p2m_mqopen_payload* payload,
+	struct thpool_buffer *tb)
+{
+
+	ssize_t* retval;
+	retval = thpool_buffer_tx(tb);
+
+	tb_set_tx_size(tb, sizeof(*retval));
+
+
+}
+
 void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	struct thpool_buffer *tb)
 {
@@ -225,6 +247,7 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 	 * 3) Handler SHOULD NOT call exit()
 	 */
 	switch (hdr->opcode) {
+	
 	case P2M_TEST:
 		handle_p2m_test(msg, buffer);
 		break;
@@ -233,6 +256,8 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		__SetThpoolBufferNoreply(buffer);
 		handle_p2m_test_noreply(msg, buffer);
 		break;
+	
+/* message queue opcode */
 	
 	case P2M_MQOPEN:
 		handle_mq_open_request(payload,buffer);
@@ -244,6 +269,15 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		printk("mq send received");
 		break;
 
+	case P2M_MQRECV:
+		handle_mq_recv_request(payload,buffer);
+		printk("mq recv received");
+		break;
+
+	case P2M_MQCLOSE:
+		handle_mq_close_request(payload,buffer);
+		printk("mq close received");
+		break;
 
 
 /* PCACHE */

@@ -11,5 +11,6 @@ int main(void)
 {
 	printf("mq_open: %d\n", mq_open("wuklab", 100));
 	char* q = "yixu's joining";
-//	printf("mq_send: %d\n", mq_send("wuklab",q, sizeof(q)));
+	printf("mq_send: %d\n", mq_send("wuklab",q, sizeof(q)));
+	mq_close("wuklab");
 }

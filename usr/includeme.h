@@ -124,7 +124,14 @@ static inline int mq_send(char *name, char* msg_data, int msg_size)
 	
 }
 
-//t2
+static inline int mq_receive(char *name, char* msg_data, int msg_size){
+	return syscall(__NR_mq_receive, name, msg_data, msg_size);
+}
+
+static inline int mq_close(char* name){
+	return syscall(__NR_mq_close, name);
+}
+
 static inline int mq_open(char* name, int msg_size)
 {
 	unsigned long size = 0;
