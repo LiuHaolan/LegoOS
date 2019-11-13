@@ -178,8 +178,43 @@ void __init processor_manager_early_init(void)
 
 SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
 {
-	//BUG();
-	return 1;
+	ssize_t retval, retlen;
+	u32 len_msg;
+	void *msg;
+	struct common_header* hdr;
+	struct p2m_mqsend_payload* payload;
+	len_msg = sizeof(*hdr)+sizeof(*payload);
+	msg = kmalloc(len_msg, GFP_KERNEL);
+	if(!msg)
+		return -ENOMEM;
+	
+	hdr = (struct common_header *)msg;
+	hdr->opcode = P2M_MQSEND;
+	hdr->src_nid = LEGO_LOCAL_NID;
+	payload=to_payload(msg);
+
+	printk("send number: %d\n",msg_size);
+
+/*
+ * should we use strlen(name)+1, plus 1 really need?
+ */ 
+	copy_from_user(payload->mq_name, name, strlen(name)+1);
+	copy_from_user(payload->msg, msg, strlen(msg)+1);
+	payload->msg_size=msg_size;
+
+	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
+	
+	/* check return value
+ 	*/
+	if(retlen == -ETIMEDOUT){
+		return -1;
+	}		
+
+	/* free allocated memory */
+	kfree(msg);
+
+	return retval;
+	
 }
 
 SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg)
@@ -192,7 +227,7 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 	//BUG();
 	return 3;
 }
-//t2
+
 SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
 {
 	ssize_t retval, retlen;
@@ -212,20 +247,18 @@ SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
 
 	printk("send number: %d\n",msg_size);
 
-	// copy string
-	// we need to use copy_user_to_kernel
-	//strcpy(payload->mq_name, name);
 	copy_from_user(payload->mq_name, name, strlen(name));
 	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
-	// check return value
-//	if(retlen == -ETIMEDOUT){
-//		return -1;
-//	}		
+	/* check return value
+ 	*/
+	if(retlen == -ETIMEDOUT){
+		return -1;
+	}		
 
-	// free allocated memory
+	/* free allocated memory */
 	kfree(msg);
 
 	return retval;

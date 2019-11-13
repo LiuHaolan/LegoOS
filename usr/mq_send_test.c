@@ -6,29 +6,10 @@
 #include <linux/unistd.h>
 #include "includeme.h"
 
-static void lego_uname(void)
-{
-	struct utsname foo;
-
-	uname(&foo);
-	printf("uname(): \n"
-	       "\t sysname: %s\n"
-	       "\t nodename: %s\n"
-	       "\t release: %s\n"
-	       "\t version: %s\n"
-	       "\t machine: %s\n",
-	       foo.sysname, foo.nodename, foo.release, foo.version, foo.machine);
-}
-
 
 int main(void)
 {
-	printf("mq_open: %d\n", mq_open("gan", 6));
-//	lego_time();
-
-//	lego_uname();
-//	lego_getrlimit();
-//	lego_set_tid_address();
-
-//	lego_time();
+	printf("mq_open: %d\n", mq_open("wuklab", 100));
+	char* q = "yixu's joining";
+//	printf("mq_send: %d\n", mq_send("wuklab",q, sizeof(q)));
 }

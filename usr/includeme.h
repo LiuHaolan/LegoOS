@@ -118,9 +118,9 @@ static inline int pcache_stat(struct pcache_stat *buf)
 	return ret;
 }
 
-static inline int mq_send(void)
+static inline int mq_send(char *name, char* msg_data, int msg_size)
 {
-	return syscall(__NR_mq_send);
+	return syscall(__NR_mq_send, name, msg_data, msg_size);
 	
 }
 
