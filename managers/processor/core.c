@@ -176,7 +176,7 @@ void __init processor_manager_early_init(void)
 	pcache_early_init();
 }
 
-SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
+SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg_data)
 {
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -199,7 +199,7 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
  * should we use strlen(name)+1, plus 1 really need?
  */ 
 	copy_from_user(payload->mq_name, name, strlen(name)+1);
-	copy_from_user(payload->msg, msg, strlen(msg)+1);
+	copy_from_user(payload->msg, msg_data, strlen(msg_data)+1);
 	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
@@ -217,7 +217,7 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
 	
 }
 
-SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg)
+SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg_data)
 {	
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -232,7 +232,7 @@ SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg)
 	hdr = (struct common_header *)msg;
 	hdr->opcode = P2M_MQRECV;
 	hdr->src_nid = LEGO_LOCAL_NID;
-	payload=to_payload(msg)
+	payload=to_payload(msg);
 
 /*
  * should we use strlen(name)+1, plus 1 really need?
@@ -269,8 +269,6 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 	hdr->opcode = P2M_MQCLOSE;
 	hdr->src_nid = LEGO_LOCAL_NID;
 	payload=to_payload(msg);
-
-	printk("send number: %d\n",msg_size);
 
 /*
  * should we use strlen(name)+1, plus 1 really need?
