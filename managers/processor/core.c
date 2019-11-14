@@ -217,9 +217,10 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg_
 	
 }
 
-SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg_data)
+SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg_data)
 {	
-	ssize_t retval, retlen;
+	struct p2m_mqrecv_reply_struct retval; 
+	ssize_t retlen;
 	u32 len_msg;
 	void *msg;
 	struct common_header* hdr;
@@ -246,11 +247,20 @@ SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg_dat
 	if(retlen == -ETIMEDOUT){
 		return -1;
 	}		
+	
+	/*
+ 	 *
+ 	 * reply, reply 0 means good
+ 	 */	
+	if(retval->ret == 0){
+		strcpy(msg_data, retval->mq_data);
+		*msg_size = strlen(msg_data);
+	}
 
 	/* free allocated memory */
 	kfree(msg);
 
-	return retval;
+	return retval->ret;
 	
 }
 SYSCALL_DEFINE1(mq_close, char*, name)

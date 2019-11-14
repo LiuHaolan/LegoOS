@@ -213,7 +213,7 @@ struct p2m_mqclose_payload{
 	char mq_name[MAX_FILENAME_LENGTH];
 };
 
-void handle_mq_close_request(struct p2m_mqopen_payload* payload, 
+void handle_mq_close_request(struct p2m_mqclose_payload* payload, 
 	struct thpool_buffer*tb);
 
 
@@ -237,7 +237,12 @@ struct p2m_mqrecv_payload{
 	char mq_name[MAX_FILENAME_LENGTH];
 };
 
-void handle_mq_receive_request(struct p2m_mqsend_payload* payload, 
+struct p2m_mqrecv_reply_struct {
+        int     ret;
+        char 	mq_data[MAX_MSG_LENGTH];
+};
+
+void handle_mq_receive_request(struct p2m_mqrecv_payload* payload, 
 	struct thpool_buffer*tb);
 
 /*

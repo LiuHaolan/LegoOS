@@ -46,38 +46,59 @@ void handle_bad_request(struct common_header *hdr, u64 desc)
 
 #include <memory/msg_q.h>
 void mq_test(void){
-	append("NVSL", 4, &yi_list);
-	append("STABLE", 6, &yi_list);
-	append("WUKLAB", 6, &yi_list);
+
+	printk("mq test begin: \n");
+	mc_mq_open("max",90);
+	mc_mq_open("steven",80);
+	mc_mq_close("max");
+	mc_mq_open("jishen",90);
+	mc_mq_send("steven", "NVSL", 4);
+	mc_mq_send("jishen", "STABLE", 6);
+	mc_mq_send("steven", "WUKLAB", 6);
+
 	char* msg = kmalloc(sizeof(char)*(MAX_FILENAME_LENGTH+1), GFP_KERNEL);	
 	int size;	
-	pop(msg,&size, &yi_list);
-	printk("%s: %d\n", msg, size);
+	if(mc_mq_receive("steven",msg,&size))
+		printk("%s: %d\n", msg, size);
+	if(mc_mq_receive("steven",msg,&size))
+		printk("%s: %d\n", msg, size);
 	kfree(msg);
-
-	print(&yi_list);
+	
+	mc_mq_free();
+	printk("mq_test end!\n");
 }
 
-void handle_mq_recv_request(struct p2m_mqopen_payload* payload,
+void handle_mq_recv_request(struct p2m_mqrecv_payload* payload,
 	struct thpool_buffer *tb)
 {
+ 	struct p2m_mqrecv_reply_struct* retval;
+	retval = thpool_buffer_tx(tb);
+	
+	char* msg = kmalloc(sizeof(char)*(MAX_FILENAME_LENGTH+1), GFP_KERNEL);	
+	int size;	
+	if(mc_mq_receive(payload->mq_name,msg,&size)){
+		printk("mq received: %s", msg);
+		strcpy(retval->mq_data, msg);
+		retval->ret = 0;
+	}
+	else{
+		retval->ret = -1;
+	}
+	tb_set_tx_size(tb, sizeof(*retval));
+	
+}
+
+void handle_mq_close_request(struct p2m_mqclose_payload* payload,
+	struct thpool_buffer *tb)
+{
+
 	ssize_t* retval;
 	retval = thpool_buffer_tx(tb);
 
 	tb_set_tx_size(tb, sizeof(*retval));
 
-}
-
-void handle_mq_close_request(struct p2m_mqopen_payload* payload,
-	struct thpool_buffer *tb)
-{
-
-	ssize_t* retval;
-	retval = thpool_buffer_tx(tb);
-
-	tb_set_tx_size(tb, sizeof(*retval));
-
-
+	mc_mq_close(payload->mq_name);
+	*retval = 0;
 }
 
 void handle_mq_open_request(struct p2m_mqopen_payload* payload,
@@ -88,17 +109,15 @@ void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	tb_set_tx_size(tb, sizeof(*retval));
 
 	// creating mq here
-	char* kname = payload->mq_name;
-	int ksize = payload->msg_size;
-	printk(kname);
-	printk("\nmessage queue size: %d\n", ksize);
+	char* mq_name = payload->mq_name;
+	int max_size = payload->msg_size;
+	printk(mq_name);
+	printk("\nmessage queue max size: %d\n", max_size);
+	
+	/* mq open */
+	mc_mq_open(mq_name, max_size);
 
-	// open real mq here
-	ksize = 10;
-//	mq_open(kname, ksize);
 
-	// test
-	mq_test();
 #ifdef CONFIG_GMM 
 	ssize_t result = read_mq_nid_from_gmm(kname);
 #endif
@@ -115,13 +134,15 @@ void handle_mq_send_request(struct p2m_mqsend_payload* payload,
 	tb_set_tx_size(tb, sizeof(*retval));
 
 	/* debug */
-	char* kname = payload->mq_name;
-	int ksize = payload->msg_size;
-	printk(kname);
-	printk("\nmessage queue size: %d\n", ksize);
+	char* mq_name = payload->mq_name;
+	char* mq_data = payload->msg;
+	int mq_size = payload->msg_size;
+	printk("mq name: %s\n", mq_name);
+	printk("mq entry: %s\n", mq_data);
+	printk("\nmq send entry size: %d\n", mq_size);
 
 	/* call mq send api from here! */
-	
+	mc_mq_send(mq_name, mq_data, strlen(mq_data));
 
 	/* return 0 means success!*/
 	*retval = 0;

@@ -26,7 +26,7 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg)
         BUG();
 }
 
-SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long, msg_size, char*, msg)
+SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg)
 {
         BUG();
 }

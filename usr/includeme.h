@@ -124,7 +124,7 @@ static inline int mq_send(char *name, char* msg_data, int msg_size)
 	
 }
 
-static inline int mq_receive(char *name, char* msg_data, int msg_size){
+static inline int mq_receive(char *name, char* msg_data, int* msg_size){
 	return syscall(__NR_mq_receive, name, msg_size, msg_data);
 }
 
