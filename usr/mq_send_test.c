@@ -15,7 +15,8 @@ int main(void)
 	char* p = malloc(sizeof(char)*10);
 	int size = 1;
 	mq_receive("cse", p, &size);  
-	printf(p);	 
+	printf("string: %s", p);
+	printf("str size: %d" ,size);	 
 	mq_close("cse");
 
 }

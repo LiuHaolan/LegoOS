@@ -132,7 +132,7 @@ static inline int mq_receive(char *name, char* msg_data, int* msg_size)
 
 static inline int mq_close(char* name){
 	unsigned long name_size = strlen(name);
-	return syscall(__NR_mq_close, name, namesize);
+	return syscall(__NR_mq_close, name, name_size);
 }
 
 static inline int mq_open(char* name, int msg_size)

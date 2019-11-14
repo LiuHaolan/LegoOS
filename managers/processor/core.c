@@ -251,8 +251,14 @@ SYSCALL_DEFINE4(mq_receive, char*, name, unsigned long, name_size, unsigned long
  	 * reply, reply 0 means good
  	 */	
 	if(retval.ret == 0){
-		strcpy(msg_data, retval.mq_data);
-		*msg_size = strlen(msg_data);
+		printk("msg received in kernel: %s\n", retval.mq_data);
+		copy_to_user(msg_data, retval.mq_data, strlen(retval.mq_data)+1);
+		unsigned long* data_size = kmalloc(sizeof(unsigned long), GFP_KERNEL);
+		*data_size = strlen(retval.mq_data);
+		copy_to_user(msg_size, data_size, sizeof(unsigned long));
+	}
+	else{
+		printk("mq receive failed: return other than 0\n");
 	}
 
 	/* free allocated memory */
@@ -316,6 +322,8 @@ SYSCALL_DEFINE3(mq_open, char* , name, unsigned long, name_size, unsigned long, 
 	payload=to_payload(msg);
 
 	printk("msg max size send number: %lu\n",msg_size);
+	int lansize = (int) msg_size
+	printk("after conversion: %d", lansize);
 
 	copy_from_user(payload->mq_name, name, name_size+1);
 	payload->msg_size=msg_size;
