@@ -252,15 +252,15 @@ SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg_da
  	 *
  	 * reply, reply 0 means good
  	 */	
-	if(retval->ret == 0){
-		strcpy(msg_data, retval->mq_data);
+	if(retval.ret == 0){
+		strcpy(msg_data, retval.mq_data);
 		*msg_size = strlen(msg_data);
 	}
 
 	/* free allocated memory */
 	kfree(msg);
 
-	return retval->ret;
+	return retval.ret;
 	
 }
 SYSCALL_DEFINE1(mq_close, char*, name)
