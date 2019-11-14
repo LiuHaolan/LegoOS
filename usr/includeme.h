@@ -120,16 +120,19 @@ static inline int pcache_stat(struct pcache_stat *buf)
 
 static inline int mq_send(char *name, char* msg_data, int msg_size)
 {
-	return syscall(__NR_mq_send, name, msg_size, msg_data);
-	
+	unsigned long name_size = strlen(name);
+	return syscall(__NR_mq_send, name, name_size, msg_size, msg_data);	
 }
 
-static inline int mq_receive(char *name, char* msg_data, int* msg_size){
-	return syscall(__NR_mq_receive, name, msg_size, msg_data);
+static inline int mq_receive(char *name, char* msg_data, int* msg_size)
+{
+	unsigned long name_size = strlen(name);	
+	return syscall(__NR_mq_receive, name, name_size, msg_size, msg_data);
 }
 
 static inline int mq_close(char* name){
-	return syscall(__NR_mq_close, name);
+	unsigned long name_size = strlen(name);
+	return syscall(__NR_mq_close, name, namesize);
 }
 
 static inline int mq_open(char* name, int msg_size)

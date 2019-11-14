@@ -87,6 +87,7 @@ void handle_mq_recv_request(struct p2m_mqrecv_payload* payload,
 		retval->ret = -1;
 	}
 */
+	strcpy(retval->mq_data, "yizhou");
 	retval->ret = -1;
 	tb_set_tx_size(tb, sizeof(*retval));
 	

@@ -176,7 +176,7 @@ void __init processor_manager_early_init(void)
 	pcache_early_init();
 }
 
-SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg_data)
+SYSCALL_DEFINE4(mq_send, char*, name, unsigned long, name_size, unsigned long, msg_size, const char*, msg_data)
 {
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -193,13 +193,11 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg_
 	hdr->src_nid = LEGO_LOCAL_NID;
 	payload=to_payload(msg);
 
-	printk("send number: %d\n",msg_size);
-
 /*
  * should we use strlen(name)+1, plus 1 really need?
  */ 
-	copy_from_user(payload->mq_name, name, strlen(name)+1);
-	copy_from_user(payload->msg, msg_data, strlen(msg_data)+1);
+	copy_from_user(payload->mq_name, name, name_size+1);
+	copy_from_user(payload->msg, msg_data, msg_size+1);
 	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
@@ -217,7 +215,7 @@ SYSCALL_DEFINE3(mq_send, char*, name, unsigned long, msg_size, const char*, msg_
 	
 }
 
-SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg_data)
+SYSCALL_DEFINE4(mq_receive, char*, name, unsigned long, name_size, unsigned long*, msg_size, char*, msg_data)
 {	
 	struct p2m_mqrecv_reply_struct retval; 
 	ssize_t retlen;
@@ -238,7 +236,7 @@ SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg_da
 /*
  * should we use strlen(name)+1, plus 1 really need?
  */ 
-	copy_from_user(payload->mq_name, name, strlen(name)+1);
+	copy_from_user(payload->mq_name, name, name_size+1);
 	
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
@@ -263,7 +261,7 @@ SYSCALL_DEFINE3(mq_receive, char*, name, unsigned long*, msg_size, char*, msg_da
 	return retval.ret;
 	
 }
-SYSCALL_DEFINE1(mq_close, char*, name)
+SYSCALL_DEFINE2(mq_close, char*, name, unsigned long, name_size)
 {	
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -283,7 +281,7 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 /*
  * should we use strlen(name)+1, plus 1 really need?
  */ 
-	copy_from_user(payload->mq_name, name, strlen(name)+1);
+	copy_from_user(payload->mq_name, name, name_size+1);
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
@@ -317,7 +315,7 @@ SYSCALL_DEFINE3(mq_open, char* , name, unsigned long, name_size, unsigned long, 
 	hdr->src_nid = LEGO_LOCAL_NID;
 	payload=to_payload(msg);
 
-	printk("send number: %d\n",msg_size);
+	printk("msg max size send number: %lu\n",msg_size);
 
 	copy_from_user(payload->mq_name, name, name_size+1);
 	payload->msg_size=msg_size;
