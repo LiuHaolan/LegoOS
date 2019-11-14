@@ -324,12 +324,12 @@ SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
 	
-	/* check return value
- 	*/
+/*	// check return value
+ 	
 	if(retlen == -ETIMEDOUT){
 		return -1;
 	}		
-
+*/
 	/* free allocated memory */
 	kfree(msg);
 

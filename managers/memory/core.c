@@ -76,7 +76,9 @@ void handle_mq_recv_request(struct p2m_mqrecv_payload* payload,
 	
 	char* msg = kmalloc(sizeof(char)*(MAX_FILENAME_LENGTH+1), GFP_KERNEL);	
 	int size;	
-	if(mc_mq_receive(payload->mq_name,msg,&size)){
+
+	printk("recv: %s", payload->mq_name);
+/*	if(mc_mq_receive(payload->mq_name,msg,&size)){
 		printk("mq received: %s", msg);
 		strcpy(retval->mq_data, msg);
 		retval->ret = 0;
@@ -84,6 +86,8 @@ void handle_mq_recv_request(struct p2m_mqrecv_payload* payload,
 	else{
 		retval->ret = -1;
 	}
+*/
+	retval->ret = -1;
 	tb_set_tx_size(tb, sizeof(*retval));
 	
 }
@@ -97,8 +101,11 @@ void handle_mq_close_request(struct p2m_mqclose_payload* payload,
 
 	tb_set_tx_size(tb, sizeof(*retval));
 
-	mc_mq_close(payload->mq_name);
+	printk("mq closed: %s\n", payload->mq_name);
+//	mc_mq_close(payload->mq_name);
 	*retval = 0;
+
+	mq_test();
 }
 
 void handle_mq_open_request(struct p2m_mqopen_payload* payload,
@@ -115,7 +122,7 @@ void handle_mq_open_request(struct p2m_mqopen_payload* payload,
 	printk("\nmessage queue max size: %d\n", max_size);
 	
 	/* mq open */
-	mc_mq_open(mq_name, max_size);
+//	mc_mq_open(mq_name, max_size);
 
 
 #ifdef CONFIG_GMM 
@@ -142,7 +149,7 @@ void handle_mq_send_request(struct p2m_mqsend_payload* payload,
 	printk("\nmq send entry size: %d\n", mq_size);
 
 	/* call mq send api from here! */
-	mc_mq_send(mq_name, mq_data, strlen(mq_data));
+//	mc_mq_send(mq_name, mq_data, strlen(mq_data));
 
 	/* return 0 means success!*/
 	*retval = 0;
