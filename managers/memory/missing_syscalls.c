@@ -36,7 +36,7 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 }
 
 //t2
-SYSCALL_DEFINE2(mq_open, char*, name, unsigned long, msg_size)
+SYSCALL_DEFINE3(mq_open, char*, name, unsigned long, name_size, unsigned long, msg_size)
 {
 	BUG();
 }

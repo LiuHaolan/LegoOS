@@ -136,7 +136,8 @@ static inline int mq_open(char* name, int msg_size)
 {
 	unsigned long size = 0;
 	size += msg_size;
-	return syscall(__NR_mq_open,name, size);
+	unsigned long name_size = strlen(name);
+	return syscall(__NR_mq_open,name, name_size, size);
 }
 
 static inline unsigned short from32to16(unsigned a) 

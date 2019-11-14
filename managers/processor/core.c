@@ -300,7 +300,7 @@ SYSCALL_DEFINE1(mq_close, char*, name)
 	
 }
 
-SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
+SYSCALL_DEFINE3(mq_open, char* , name, unsigned long, name_size, unsigned long, msg_size)
 {
 	ssize_t retval, retlen;
 	u32 len_msg;
@@ -319,7 +319,7 @@ SYSCALL_DEFINE2(mq_open, char* , name, unsigned long, msg_size)
 
 	printk("send number: %d\n",msg_size);
 
-	copy_from_user(payload->mq_name, name, strlen(name));
+	copy_from_user(payload->mq_name, name, name_size+1);
 	payload->msg_size=msg_size;
 
 	retlen = ibapi_send_reply_imm(current_pgcache_home_node(), msg, len_msg, &retval, sizeof(retval),false);	
