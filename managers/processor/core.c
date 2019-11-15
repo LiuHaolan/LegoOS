@@ -253,21 +253,22 @@ SYSCALL_DEFINE4(mq_receive, char*, name, unsigned long, name_size, unsigned long
 	if(retval.ret == 0){
 		printk("msg received in kernel: %s\n", retval.mq_data);
 		printk("strlen: %lu", strlen(retval.mq_data));
-		if(copy_to_user(msg_data, retval.mq_data, (unsigned long)strlen(retval.mq_data)+1)){
+		if(copy_to_user(msg_data, (void*)retval.mq_data, (unsigned long)strlen(retval.mq_data)+1)){
+			printk("copy to user failed\n");
 			kfree(msg);
 			return -EFAULT;
 		}
 		
-		unsigned long* data_size = kmalloc(sizeof(unsigned long), GFP_KERNEL);
-	/** let's move this to user space
+	/*	unsigned long* data_size = kmalloc(sizeof(unsigned long), GFP_KERNEL);
+	 *let's move this to user space
 		*data_size = (unsigned long)strlen(retval.mq_data);
 		if(copy_to_user(msg_size, data_size, sizeof(unsigned long))){
 			kfree(msg);
 			return -EFAULT;
 		}
-	*/
+	
 
-		kfree(data_size);
+		kfree(data_size); */
 	}
 	else{
 		printk("mq receive failed: return other than 0\n");
