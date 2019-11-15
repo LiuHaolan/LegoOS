@@ -12,11 +12,11 @@ int main(void)
 	printf("mq_open: %d\n", mq_open("cse", 100));
 	char* q = "yixu's joining";
 	printf("mq_send: %d\n", mq_send("cse",q, strlen(q)));
-	char* p = malloc(sizeof(char)*10);
-	int size = 1;
+	char* p = "yiyinglegoos";
+	unsigned long size = 1;
 	mq_receive("cse", p, &size);  
 	printf("string: %s", p);
-	printf("str size: %d" ,size);	 
+	printf("str size: %lu" ,size);	 
 	mq_close("cse");
 
 }
