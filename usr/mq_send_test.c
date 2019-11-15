@@ -16,7 +16,7 @@ int main(void)
 	unsigned long size = 1;
 	mq_receive("cse", p, &size);  
 	printf("string: %s", p);
-	printf("str size: %lu" ,size);	 
+	printf("str size: %lu\n" ,size);	 
 	mq_close("cse");
 
 }

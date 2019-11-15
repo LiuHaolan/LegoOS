@@ -124,10 +124,13 @@ static inline int mq_send(char *name, char* msg_data, int msg_size)
 	return syscall(__NR_mq_send, name, name_size, msg_size, msg_data);	
 }
 
-static inline int mq_receive(char *name, char* msg_data, int* msg_size)
-{
+static inline int mq_receive(char *name, char* msg_data, unsigned long* msg_size)
+{	
 	unsigned long name_size = strlen(name);	
-	return syscall(__NR_mq_receive, name, name_size, msg_size, msg_data);
+	int res = syscall(__NR_mq_receive, name, name_size, msg_size, msg_data);
+	
+	*msg_size= strlen(msg_data);
+	return res;
 }
 
 static inline int mq_close(char* name){

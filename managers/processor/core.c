@@ -259,11 +259,14 @@ SYSCALL_DEFINE4(mq_receive, char*, name, unsigned long, name_size, unsigned long
 		}
 		
 		unsigned long* data_size = kmalloc(sizeof(unsigned long), GFP_KERNEL);
+	/** let's move this to user space
 		*data_size = (unsigned long)strlen(retval.mq_data);
 		if(copy_to_user(msg_size, data_size, sizeof(unsigned long))){
 			kfree(msg);
 			return -EFAULT;
 		}
+	*/
+
 		kfree(data_size);
 	}
 	else{

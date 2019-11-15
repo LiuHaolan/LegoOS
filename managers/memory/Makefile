@@ -14,7 +14,7 @@ obj-y += missing_syscalls.o
 obj-y += m2s_read_write.o
 obj-y += stat.o
 obj-y += test.o
-#obj-y += handle_mq.o
+obj-y += handle_mq.o
 # Pcache
 obj-y += handle_pcache/
 
