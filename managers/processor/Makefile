@@ -4,6 +4,7 @@
 
 obj-y := core.o
 obj-y += message_queue.o
+obj-y += state_mg.o
 obj-y += fork.o
 obj-y += exec.o
 obj-y += pgtable.o

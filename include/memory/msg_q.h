@@ -13,6 +13,8 @@ struct mc_msg_queue{
 	char* msg_data;
 	unsigned int msg_size;
 	struct list_head list;
+	/* this array is the pid table 
+	struct list_head pid_list; */
 };
 
 static DEFINE_SPINLOCK(map_lock);

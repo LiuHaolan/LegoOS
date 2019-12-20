@@ -246,9 +246,16 @@ asmlinkage long sys_epoll_wait(int epfd, struct epoll_event __user *events,
 asmlinkage long sys_poll(struct pollfd __user *ufds, unsigned int nfds,
 			long timeout_msecs);
 
-// ipc
+/* ipc
+ * message queue system call
+ */
 asmlinkage long sys_mq_send(char* mq_name, unsigned long name_size, unsigned long msg_size, const char* msg);
 asmlinkage long sys_mq_open(char* mq_name, unsigned long name_size, unsigned long msg_size);
 asmlinkage long sys_mq_receive(char* mq_name, unsigned long name_size, unsigned long* msg_size, char* msg);
 asmlinkage long sys_mq_close(char* mq_name, unsigned long name_size);
+
+
+asmlinkage long sys_vms_save(const char* name, unsigned long addr, size_t len, bool if_persist);
+asmlinkage long sys_vms_restore(const char* name, unsigned long* addr, size_t* len);
+
 #endif /* _LEGO_SYSCALLS_H_ */

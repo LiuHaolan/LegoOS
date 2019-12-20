@@ -129,3 +129,7 @@
 613 	common  mq_open			sys_mq_open
 614	common  mq_receive		sys_mq_receive
 615	common  mq_close		sys_mq_close
+
+616	common  vms_save		sys_vms_save
+617	common  vms_restore		sys_vms_restore
+
