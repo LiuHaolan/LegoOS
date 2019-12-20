@@ -292,18 +292,18 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 /* message queue opcode */
 	
 	case P2M_MQOPEN:
-		printk("mq open received");
+//		printk("mq open received");
 		handle_mq_open_request(payload,buffer);
 		break;
 
 	case P2M_MQSEND:
 		handle_mq_send_request(payload,buffer);
-		printk("mq send received");
+//		printk("mq send received");
 		break;
 
 	case P2M_MQRECV:
 		handle_mq_recv_request(payload,buffer);
-		printk("mq recv received");
+//		printk("mq recv received");
 		break;
 
 	case P2M_MQCLOSE:

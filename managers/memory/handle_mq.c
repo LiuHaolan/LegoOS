@@ -69,7 +69,10 @@ void free_all(struct list_head* name_nid_dict){
 	struct list_head* cur=name_nid_dict->next;
 	while(cur != name_nid_dict){		
 		struct mc_msg_queue* item = list_entry(cur, struct mc_msg_queue, list);
+
+/*
 		printk("message freed:%s \n", item->msg_data);
+*/
 		struct list_head* tmp = cur->next;
 		list_del(cur);
 
@@ -104,8 +107,6 @@ unsigned int mc_mq_open(char* mq_name, unsigned int max_size)
 	/* return 0 means message queue already exist	
  * 	*/
 	spin_unlock_irqrestore(&map_lock, flags);
-
-	printk("begin open %s direc\n", mq_name);
 
 	struct name_mq_map* tmp;
 	
@@ -192,10 +193,12 @@ unsigned int mc_mq_close(char* mq_name){
 		spin_unlock_irqrestore(&map_lock, flags);	
 		return 0;	
 	}
+/*
 	printk("close: ");		
 	printk(target->mq_name);
 	printk(" ");
 	printk("max size data: %d\n", target->max_size);
+*/	
 	list_del(&target->list);
 
 	spin_unlock_irqrestore(&map_lock, flags);
