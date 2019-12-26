@@ -20,7 +20,20 @@
 
 SYSCALL_DEFINE4(vms_save, const char*, name, unsigned long, addr, size_t, len, bool, if_persist)
 {
-        BUG();
+        struct p2m_mmap_struct payload;
+	struct p2m_mmap_reply_struct reply;
+
+	long ret_len, ret_addr;
+
+	payload.pid = current->tgid;
+	payload.addr = addr;
+	payload.len = len;
+
+	ret_len = net_send_reply_timeout(current_memory_home_node(), P2M_VMS_SAVE,
+			&payload, sizeof(payload), &reply, sizeof(reply),
+			false, DEF_NET_TIMEOUT);
+
+	return ret_addr;
 }
 
 SYSCALL_DEFINE3(vms_restore, const char*, name, unsigned long*, addr, size_t*, len)

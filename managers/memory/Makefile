@@ -18,6 +18,9 @@ obj-y += handle_mq.o
 # Pcache
 obj-y += handle_pcache/
 
+# state management
+obj-y += handle_func_state.o
+
 # Replication
 obj-y += replica/
 

@@ -31,6 +31,8 @@
 #include <memory/thread_pool.h>
 #include <memory/pgcache.h>
 
+#include <memory/vm_state.h>
+
 #include <monitor/gmm_handler.h>
 #include <monitor/common.h>
 void handle_bad_request(struct common_header *hdr, u64 desc)
@@ -289,26 +291,36 @@ static void thpool_worker_handler(struct thpool_worker *worker,
 		handle_p2m_test_noreply(msg, buffer);
 		break;
 	
-/* message queue opcode */
+	/*
+ 	 * vms_save/restore handler
+ 	 * for state management in serverless function
+ 	 */
+	
+	case P2M_VMS_SAVE:
+		printk("save\n");
+		handle_p2m_vms_save(payload, hdr, buffer);
+		break;
+
+	case P2M_VMS_RESTORE:
+		printk("restore\n");
+		break;
+
+	/* message queue opcode */
 	
 	case P2M_MQOPEN:
-//		printk("mq open received");
 		handle_mq_open_request(payload,buffer);
 		break;
 
 	case P2M_MQSEND:
 		handle_mq_send_request(payload,buffer);
-//		printk("mq send received");
 		break;
 
 	case P2M_MQRECV:
 		handle_mq_recv_request(payload,buffer);
-//		printk("mq recv received");
 		break;
 
 	case P2M_MQCLOSE:
 		handle_mq_close_request(payload,buffer);
-		printk("mq close received");
 		break;
 
 
