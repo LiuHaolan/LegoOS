@@ -118,6 +118,12 @@ static inline int pcache_stat(struct pcache_stat *buf)
 	return ret;
 }
 
+static inline int vms_save(const char* name, unsigned long addr, size_t len, unsigned long if_persist){
+
+	syscall(__NR_vms_save, name,addr,len,if_persist);
+	return 0;
+}
+
 static inline int mq_send(char *name, char* msg_data, int msg_size)
 {
 	unsigned long name_size = strlen(name);

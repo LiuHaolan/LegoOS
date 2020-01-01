@@ -18,7 +18,7 @@
 #include "processor.h"
 #include <lego/fit_ibapi.h>
 
-SYSCALL_DEFINE4(vms_save, const char*, name, unsigned long, addr, size_t, len, bool, if_persist)
+SYSCALL_DEFINE4(vms_save, const char*, name, unsigned long, addr, size_t, len, unsigned long, if_persist)
 {
         struct p2m_mmap_struct payload;
 	struct p2m_mmap_reply_struct reply;

@@ -40,7 +40,7 @@ SYSCALL_DEFINE3(mq_open, char*, name, unsigned long, name_size, unsigned long, m
 	BUG();
 }
 
-SYSCALL_DEFINE4(vms_save, const char*, name, unsigned long, addr, size_t, len, bool, if_persist)
+SYSCALL_DEFINE4(vms_save, const char*, name, unsigned long, addr, size_t, len, unsigned long, if_persist)
 {
 	BUG();
 }

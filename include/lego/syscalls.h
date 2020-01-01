@@ -255,7 +255,7 @@ asmlinkage long sys_mq_receive(char* mq_name, unsigned long name_size, unsigned 
 asmlinkage long sys_mq_close(char* mq_name, unsigned long name_size);
 
 
-asmlinkage long sys_vms_save(const char* name, unsigned long addr, size_t len, bool if_persist);
+asmlinkage long sys_vms_save(const char* name, unsigned long addr, size_t len, unsigned long if_persist);
 asmlinkage long sys_vms_restore(const char* name, unsigned long* addr, size_t* len);
 
 #endif /* _LEGO_SYSCALLS_H_ */
